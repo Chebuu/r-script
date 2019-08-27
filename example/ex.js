@@ -5,7 +5,15 @@ var R = require("r-script");
 var out = R("example/ex-sync.R")
   .data("hello world", 20)
   .callSync();
-console.log(out);
+console.log(out.stdout);
+console.error(out.stderr);
+
+// sync error
+var out = R("example/ex-error.R")
+  .data({message: 'Hello stderr'})
+  .callSync();
+console.log(out.stdout);
+console.error(out.stderr);
 
 // async
 var attitude = JSON.parse(
@@ -13,7 +21,15 @@ var attitude = JSON.parse(
 
 R("example/ex-async.R")
   .data({df: attitude, nGroups: 3, fxn: "mean" })
-  .call(function(err, d) {
-    if (err) throw err;
-    console.log(d);
+  .call(function(stderr, stdout) {
+    if (stderr) console.error(stderr);
+    console.log(stdout);
+  });
+
+// async error
+R("example/ex-error.R")
+  .data({message: 'Hello stderr'})
+  .call(function(stderr, stdout) {
+    if (stderr) console.error(stderr);
+    console.log(stdout);
   });
