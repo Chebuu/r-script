@@ -1,17 +1,17 @@
-# r-script
+# @chebuu/r-script
 
+A quick fix for what seems to be an unmaintained project.
+
+In the original code, the `.call` and `.callSync` methods handled stderr from the R child process by throwing. A `JSON.parse` error was also thrown if stdout was empty. I replaced this functionality in both methods by returning stderr as a string. I also included a weak validation of the argument to `JSON.parse` to prevent an error when stdout is empty.
+
+# r-script
 A simple little module for passing data from NodeJS to R (and back again).
 
 Data passed from node is converted into a list and loaded into the R environment as the variable `input`. No special syntax in R is needed. For better portability/reliability, it's recommended to load packages with [`needs`](https://github.com/joshkatz/needs) (comes packaged inside the module — no installation required).
 
-### Installation
-```
-npm install r-script
-```
-
 ### Example
 
-```js
+```javascript
 var R = require("r-script");
 ```
 
